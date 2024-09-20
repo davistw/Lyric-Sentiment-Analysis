@@ -1,0 +1,179 @@
+<!doctype html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><html lang="en" class="no-js"> <![endif]-->
+<html lang="en">
+
+    <head>
+
+        <!-- Basic -->
+        <title>Visualizing Lyric Sentiment</title>
+
+        <!-- Define Charset -->
+        <meta charset="utf-8">
+
+        <!-- Responsive Metatag -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        
+
+        <!-- Bootstrap CSS  -->
+        <link rel="stylesheet" href="asset/bootstrap/css/bootstrap.min.css" type="text/css">
+
+        <!-- Font Awesome CSS -->
+        <link rel="stylesheet" href="asset/font-awesome/css/font-awesome.min.css" type="text/css">
+
+        <!-- Owl Carousel CSS -->
+        <link rel="stylesheet" href="asset/css/owl.carousel.css" type="text/css">
+        <link rel="stylesheet" href="asset/css/owl.theme.css" type="text/css">
+        <link rel="stylesheet" href="asset/css/owl.transitions.css" type="text/css">
+        
+        <!-- Css3 Transitions Styles  -->
+        <link rel="stylesheet" type="text/css" href="asset/css/animate.css">
+        
+        <!-- Lightbox CSS -->
+        <link rel="stylesheet" type="text/css" href="asset/css/lightbox.css">
+
+        <!-- Sulfur CSS Styles  -->
+        <link rel="stylesheet" type="text/css" href="asset/css/style.css">
+
+        <!-- Responsive CSS Style -->
+        <link rel="stylesheet" type="text/css" href="asset/css/responsive.css">
+
+
+        <script src="asset/js/modernizrr.js"></script>
+
+        
+
+    </head>
+
+    <body>
+    
+       
+        
+        
+        <!-- Start Header Section -->
+        <div class="page-header">
+            <div class="overlay">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1>Sentiment Analysis On Music Lyrics: Interactive Visualization</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Header Section -->
+        
+        
+        <!-- Start About Us Section -->
+    <section id="about-section" class="about-section">
+        <div class="container">
+            <div class="row">
+               <div class="col-md-5">
+                   
+               </div>
+               <div class="col-md-7">
+                   <div class="visualization-text">
+                       <p>Welcome to our Interactive Visualization demo page. As shown below, there are 3 different options available to you for viewing a ~15,000 record subset of our result data that was compiled for this demo: 1) General Exploration 2) Artist-Specific 3) Top Scores.<br></br></p><p> 1) General Exploration:</p><p>For general exploration purposes, we have taken randomized subsets of classification results from each of our experiments. Each of the randomized subsets contain 500 individual records that correspond to each of the classifications that were made in the experiments (i.e. positive, negative, happy, sad, etc.). Both the spaCy and Clustering demos use the same song records in order to allow for a better visual comparison of how the different methods classified the same songs into their respective categories. To view the results, please click on the select box shown below and choose your desired option.</p>
+
+                       <label for="general">Choose an Experiment:</label>
+
+<select id="general" onchange="location = this.value;">
+  <option value=0>---</option>
+  <option value="visualizations/Vader Demo Visualizing Lyric Sentiment.html">Multiclass Classification (VADER)</option>
+  <option value="visualizations/Emotion Classification spaCy demo.html">Emotion Classification (spaCy)</option>
+  <option value="visualizations/Clustering Demo Visualizing Lyric Sentiment.html">Emotion Classification (Clustering)</option>
+</select>
+
+                       <p><br></br>2) Artist-Specific:</p><p> A list of 30 artists/groups from a variety of different time periods and genres are included in our sample dataset. To view the emotional classifications of these songs, as determined via our clustering experiment, please click on the select box shown below and choose your desired option.</p>
+
+                       <label for="artist">Choose an Artist:</label>
+
+<select id="artist" onchange="location = this.value;">
+  <option value=0>---</option>
+  <option value="visualizations/Shakira Visualizing Lyric Sentiment.html">Shakira</option>
+  <option value="visualizations/2 Chainz Visualizing Lyric Sentiment.html">2 Chainz</option>
+  <option value="visualizations/Suicide Boy Visualizing Lyric Sentiment.html">$UICIDEBOY$</option>
+  <option value="visualizations/Aretha Franklin Visualizing Lyric Sentiment.html">Aretha Franklin</option>
+  <option value="visualizations/Jefferson Airplane Visualizing Lyric Sentiment.html">Jefferson Airplane</option>
+  <option value="visualizations/Bing Crosby Visualizing Lyric Sentiment.html">Bing Crosby</option>
+  <option value="visualizations/Coldplay Visualizing Lyric Sentiment.html">Coldplay</option>
+  <option value="visualizations/Aerosmith Visualizing Lyric Sentiment.html">Aerosmith</option>
+  <option value="visualizations/Jay Z Visualizing Lyric Sentiment.html">JAY-Z</option>
+  <option value="visualizations/Kiss Visualizing Lyric Sentiment.html">Kiss</option>
+  <option value="visualizations/Joan Baez Visualizing Lyric Sentiment.html">Joan Baez</option>
+  <option value="visualizations/Johnny Cash Visualizing Lyric Sentiment.html">Johnny Cash</option>
+  <option value="visualizations/Kanye West Visualizing Lyric Sentiment.html">Kanye West</option>
+  <option value="visualizations/Korn Visualizing Lyric Sentiment.html">Korn</option>
+  <option value="visualizations/Prince Visualizing Lyric Sentiment.html">Prince</option>
+  <option value="visualizations/Snoop Dogg Visualizing Lyric Sentiment.html">Snoop Dogg</option>
+  <option value="visualizations/The Beatles Visualizing Lyric Sentiment.html">The Beatles</option>
+  <option value="visualizations/Usher Visualizing Lyric Sentiment.html">Usher</option>
+  <option value="visualizations/Beyonce Visualizing Lyric Sentiment.html">Beyonce</option>
+  <option value="visualizations/Jennifer Lopez Visualizing Lyric Sentiment.html">Jennifer Lopez</option>
+  <option value="visualizations/Frank Sinatra Visualizing Lyric Sentiment.html">Frank Sinatra</option>
+  <option value="visualizations/Iron Maiden Visualizing Lyric Sentiment.html">Iron Maiden</option>
+  <option value="visualizations/Lil Wayne Visualizing Lyric Sentiment.html">Lil Wayne</option>
+  <option value="visualizations/Michael Jackson Visualizing Lyric Sentiment.html">Michael Jackson</option>
+  <option value="visualizations/Dolly Parton Visualizing Lyric Sentiment.html">Dolly Parton</option>
+  <option value="visualizations/Foo Fighters Visualizing Lyric Sentiment.html">Foo Fighters</option>
+  <option value="visualizations/Imagine Dragons Visualizing Lyric Sentiment.html">Imagine Dragons</option>
+  <option value="visualizations/Whitney Houston Visualizing Lyric Sentiment.html">Whitney Houston</option>
+  <option value="visualizations/Carrie Underwood Visualizing Lyric Sentiment.html">Carrie Underwood</option>
+  <option value="visualizations/Enya Visualizing Lyric Sentiment.html">Enya</option>
+  
+
+</select>
+
+                       <p><br></br>3) Top Scores:</p><p> The "top" 100 scores from our initial experiments involving VADER and spaCy are included in our sample dataset. These scores include the top 100 highest and lowest compound, valence, and arousal values that were produced for the entirety of our ~250,000 song records. These correspond to the top positive, negative, happy, sad, angry, and relaxed scores. To view the top VADER/spaCy classifications and scores, please click on the select box shown below and choose your desired option.</p>
+
+                       <label for="scores">Choose Scores:</label>
+
+<select id="scores" onchange="location = this.value;">
+  <option value=0>---</option>
+  <option value="visualizations/Top Vader Scores Visualizing Lyric Sentiment.html">Top Vader Scores</option>
+  <option value="visualizations/Top Spacy Scores.html">Top spaCy Scores</option>
+  
+</select>
+
+
+
+
+                       
+                   </div>
+                   
+                   </div>
+                   
+               </div>
+                
+                
+                
+            </div>
+        </div>
+    </section>
+        
+        
+        
+        
+        
+     <!-- Sulfur JS File -->
+        <script src="asset/js/jquery-2.1.3.min.js"></script>
+        <script src="asset/js/jquery-migrate-1.2.1.min.js"></script>
+        <script src="asset/bootstrap/js/bootstrap.min.js"></script>
+        <script src="asset/js/owl.carousel.min.js"></script>
+        <script src="asset/js/jquery.appear.js"></script>
+        <script src="asset/js/jquery.fitvids.js"></script>
+        <script src="asset/js/jquery.nicescroll.min.js"></script>
+        <script src="asset/js/lightbox.min.js"></script>
+        <script src="asset/js/count-to.js"></script>
+        <script src="asset/js/styleswitcher.js"></script>
+        
+        <script src="asset/js/map.js"></script>
+        <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script src="asset/js/script.js"></script>
+   
+        
+    
+    </body>
+</html>

@@ -1,0 +1,472 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Visualizing Lyric Sentiment</title>
+    <link rel="stylesheet" href="scatter.css" charset="utf-8">
+  </head>
+  <body>
+    <div id="scatter"></div>
+    
+    
+    
+
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <script src="scatter.js" charset="utf-8"></script>
+
+
+<form action="../visualizations/Whitney Houston Visualizing Lyric Sentiment.html">
+    <input type="submit" value="Reset View" />
+</form>
+<p><a href="../visualization interface.html">Return to Main Menu</a></p>
+  
+
+  <style>
+    rect {
+  fill: transparent;
+  shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.1);
+  shape-rendering: crispEdges;
+}
+
+.axisLine {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 2px;
+}
+
+.dot {
+  fill-opacity: .5;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+
+
+</style>
+
+
+
+
+
+<script>
+
+  
+
+
+
+
+
+// Set Graph Margins
+
+  var margin = { top: 50, right: 300, bottom: 50, left: 50 },
+    outerWidth = 1050,
+    outerHeight = 500,
+    width = outerWidth - margin.left - margin.right,
+    height = outerHeight - margin.top - margin.bottom;
+
+
+// X and Y Scales
+
+var x = d3.scale.linear()
+    .range([0, width]).nice();
+
+var y = d3.scale.linear()
+    .range([height, 0]).nice();
+
+
+// Assign Data to Variables
+
+var xCat = "Valence",
+    yCat = "Arousal",
+    song = "Song",
+    singer = "Singer",
+    artist = "Artist/Group",
+    genre = "Genre",
+    neu = "Sentiment";
+
+
+
+// Load Data
+
+
+
+
+var all = "final_sample.csv"
+
+
+
+
+d3.csv(all, function(data) {
+  data.forEach(function(d) {
+    d["Singer"] = d["Singer"];
+    d["Song"] = d["Song"];
+    d["Genre"] = d["Genre"];
+    d["Vader_Score"] = d["Vader_Score"];
+    d["Valence"] = d["Valence"];
+    d["Arousal"] = d["Arousal"];
+    d["Decade"] = d["Decade"];
+    d["Sentiment"] = d["Sentiment"];
+    d["Total_Word_Count"] = d["Total_Word_Count"];
+    d["Unique_Word_Count"] = d["Unique_Word_Count"];
+    d["Fraction_Unique_Words"] = d["Fraction_Unique_Words"];
+    d["Numer_Unique_Word_Lengths"] = d["Numer_Unique_Word_Lengths"];
+    d["Min_Word_Length"] = d["Min_Word_Length"];
+    d["Max_Word_Length"] = d["Max_Word_Length"];
+    d["Average_Word_Length"] = d["Average_Word_Length"];
+    d["X"] = d["X"];
+
+  });
+
+
+data = data.slice(13175, 13317)
+
+// Set Domain and Axis boundaries
+
+  var xMax = d3.max(data, function(d) { return d[xCat]; }) * 1.05,
+      xMin = d3.min(data, function(d) { return d[xCat]; }),
+      xMin = xMin > 0 ? 0 : xMin;
+      yMax = d3.max(data, function(d) { return d[yCat]; }) * 1.05,
+      yMin = d3.min(data, function(d) { return d[yCat]; }),
+      yMin = yMin > 0 ? 0 : yMin;
+
+  x.domain([xMin, xMax]);
+  y.domain([yMin, yMax]);
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom")
+      .tickSize(-height);
+      
+
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left")
+      .tickSize(-width);
+
+
+
+  // Create Tool Tip for Info Box
+
+  var tip = d3.tip()
+      .attr("class", "d3-tip")
+      .offset([-10, 0])
+      .html(function(d) {
+        return song + ": " + d[song] + "<br>" + artist + ": " + d[singer] + "<br>" + genre + ": " + d[genre] + "<br>" + xCat + ": " + d[xCat] + "<br>" + yCat + ": " + d[yCat];
+      });
+
+  
+  // Zoom Function
+
+  var zoomer = d3.behavior.zoom()
+      .x(x)
+      .y(y)
+      .scaleExtent([0, 500])
+      .on("zoom", zoom);
+
+
+
+  // Set Area for Plot and Info Box
+
+  var svg = d3.select("#scatter")
+      .append("svg")
+      .attr("width", outerWidth)
+      .attr("height", outerHeight)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .call(zoomer);
+
+  svg.call(tip);
+
+  svg.append("rect")
+      .attr("width", width)
+      .attr("height", height);
+
+  
+  // Axis Labels
+
+  svg.append("g")
+      .classed("x axis", true)
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .append("text")
+      .classed("label", true)
+      .attr("x", width)
+      .attr("y", margin.bottom - 10)
+      .style("text-anchor", "end")
+      .text("Valence");
+
+  svg.append("g")
+      .classed("y axis", true)
+      .call(yAxis)
+      .append("text")
+      .classed("label", true)
+      .attr("transform", "rotate(-90)")
+      .attr("y", -margin.left)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Arousal");
+
+
+  // Plot Title
+
+  svg.append("text")
+           .attr("x", +365)             
+           .attr("y", -20)
+           .attr("text-anchor", "middle")
+           .attr("font-weight", 505)  
+           .style("font-size", "25px") 
+           .text("Visualizing Lyric Sentiment: Whitney Houston");
+
+
+
+  // User Directions
+
+  svg.append("text")
+           .attr("x", +875)             
+           .attr("y", 110)
+           .attr("text-anchor", "middle") 
+           .style("font-size", "15px") 
+           .text("Features/Directions:");
+
+  svg.append("text")
+           .attr("x", +725)             
+           .attr("y", 135)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("1) Use your mouse scroller to scale graph magnification.");
+
+  svg.append("text")
+           .attr("x", +725)             
+           .attr("y", 160)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("2) Click and hold with mouse cursor to drag plot canvas.");
+
+  svg.append("text")
+           .attr("x", +725)             
+           .attr("y", 185)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("3) Position mouse cursor over a data point to view key");
+
+  svg.append("text")
+           .attr("x", +738)             
+           .attr("y", 210)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("information and statistics relevant to that point.");
+
+  svg.append("text")
+           .attr("x", +725)             
+           .attr("y", 235)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("4) Click the Reset View button to return to a default");
+
+  svg.append("text")
+           .attr("x", +738)             
+           .attr("y", 260)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("graph presentation and axis scaling.");
+
+  svg.append("text")
+           .attr("x", +725)             
+           .attr("y", 285)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("5) Click the Return to Main Menu link or the back");
+
+  svg.append("text")
+           .attr("x", +738)             
+           .attr("y", 310)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("button on your browser to return to the main menu.");
+
+  svg.append("text")
+           .attr("x", +720)             
+           .attr("y", 320)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("____________________________________________________");
+
+  svg.append("text")
+           .attr("x", +720)             
+           .attr("y", 340)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("*Metric Notes: The valence metric represents the degree");
+
+  svg.append("text")
+           .attr("x", +720)             
+           .attr("y", 355)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("to which a word is associated with a positive/negative");
+
+  svg.append("text")
+           .attr("x", +720)             
+           .attr("y", 370)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("emotion. Arousal represents the overall strength of the");
+
+  svg.append("text")
+           .attr("x", +720)             
+           .attr("y", 385)
+           .attr("text-anchor", "left") 
+           .style("font-size", "12px") 
+           .text("emotional state.");
+
+
+
+
+
+  // Create Objects for Axis lines
+
+  var objects = svg.append("svg")
+      .classed("objects", true)
+      .attr("width", width)
+      .attr("height", height);
+
+  objects.append("svg:line")
+      .classed("axisLine hAxisLine", true)
+      .attr("x1", 0)
+      .attr("y1", 0)
+      .attr("x2", width)
+      .attr("y2", 0)
+      .attr("transform", "translate(0," + height + ")");
+
+  objects.append("svg:line")
+      .classed("axisLine vAxisLine", true)
+      .attr("x1", 0)
+      .attr("y1", 0)
+      .attr("x2", 0)
+      .attr("y2", height);
+
+
+  // Add Data Points and Color-Coding
+
+  objects.selectAll(".dot")
+      .data(data)
+      .enter().append("circle")
+      .classed("dot", true)
+      .attr("r", 5)
+      .attr("transform", transform)
+      .style("fill", function(d) {
+        var circle_fill;
+        if (d['Cluster_Label'] == 'angry') {circle_fill = "#c92626"}
+          else if (d['Cluster_Label'] == 'happy') {circle_fill = "#43ba2b"}
+            else if (d['Cluster_Label'] == 'sad') {circle_fill = "#737270"}
+              else if (d['Cluster_Label'] == 'relaxed') {circle_fill = "#32cfcc"}
+                return circle_fill
+
+        })
+
+
+  
+      // Display Info Box on Mouseover
+
+      .on("mouseover", tip.show)
+      .on("mouseout", tip.hide);
+
+
+
+  
+  // Legend
+
+svg.append("circle").attr("cx",730).attr("cy",25).attr("r", 6).style("fill", "#959994")
+svg.append("circle").attr("cx",730).attr("cy",45).attr("r", 6).style("fill", "#43ba2b")
+svg.append("circle").attr("cx",730).attr("cy",65).attr("r", 6).style("fill", "#c92626")
+svg.append("circle").attr("cx",730).attr("cy",85).attr("r", 6).style("fill", "#32cfcc")
+svg.append("text").attr("x", 745).attr("y", 28).text("Sad").style("font-size", "12px").attr("alignment-baseline","middle")
+svg.append("text").attr("x", 745).attr("y", 48).text("Happy").style("font-size", "12px").attr("alignment-baseline","middle")
+svg.append("text").attr("x", 745).attr("y", 68).text("Angry").style("font-size", "12px").attr("alignment-baseline","middle")
+svg.append("text").attr("x", 745).attr("y", 88).text("Relaxed").style("font-size", "12px").attr("alignment-baseline","middle")
+
+
+
+// Enable Reset Button Functionality
+
+  d3.select("input").on("click", change);
+
+
+
+// Apply Zoom Transitions and Axis Scaling
+
+  function change() {
+    xCat = "Valence";
+    xMax = d3.max(data, function(d) { return d[xCat]; });
+    xMin = d3.min(data, function(d) { return d[xCat]; });
+
+    zoomer.x(x.domain([xMin, xMax])).y(y.domain([yMin, yMax]));
+
+    var svg = d3.select("#scatter").transition();
+
+    
+    // Axis Reset
+    svg.select(".x.axis").duration(750).call(xAxis).select(".label").text("Valence");
+    svg.select(".y.axis").duration(750).call(yAxis).select(".label").text("Arousal");
+
+    objects.selectAll(".dot").transition().duration(1000).attr("transform", transform);
+  }
+
+  function zoom() {
+    svg.select(".x.axis").call(xAxis);
+    svg.select(".y.axis").call(yAxis);
+
+    svg.selectAll(".dot")
+        .attr("transform", transform);
+  }
+
+  function transform(d) {
+    return "translate(" + x(d[xCat]) + "," + y(d[yCat]) + ")";
+  }
+});
+
+
+
+
+
+
+</script>
+</body>
+
+
+
+</html>
